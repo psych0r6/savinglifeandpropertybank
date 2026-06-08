@@ -66,7 +66,7 @@ const TOKENS = {
 
 /* ─── GLOBAL CSS ────────────────────────────────────────────── */
 const buildCSS = (T) => `
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   ::-webkit-scrollbar { width: 5px; height: 5px; }
   ::-webkit-scrollbar-track { background: transparent; }
@@ -74,7 +74,52 @@ const buildCSS = (T) => `
   .slb { font-family: 'DM Sans', sans-serif; }
   .slb-serif { font-family: 'Playfair Display', serif; }
   .slb-mono { font-family: 'DM Mono', monospace; }
-  .slb-balance { font-family: 'Playfair Display', serif; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+  .slb-balance { font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; letter-spacing: -0.04em; font-weight: 600; }
+  
+  /* ── MOBILE RESPONSIVE ── */
+  .mobile-nav {
+    display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+    background: ${T.nav}; border-top: 1px solid ${T.navBorder};
+    padding: 8px 0 env(safe-area-inset-bottom, 8px);
+  }
+  .sidebar-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+    z-index: 50; backdrop-filter: blur(2px);
+  }
+  @media (max-width: 768px) {
+    .mobile-nav { display: flex; }
+    .sidebar-overlay { display: block; }
+    .desktop-sidebar { position: fixed !important; top: 0; bottom: 0; left: 0; z-index: 60; height: 100vh; }
+    .main-content { padding: 16px 14px 80px !important; }
+    .topbar-search { display: none !important; }
+    .topbar-user-name { display: none !important; }
+    .stat-cards-row { flex-direction: column !important; }
+    .stat-cards-row > div { min-width: unset !important; width: 100% !important; }
+    .chart-grid-2 { grid-template-columns: 1fr !important; }
+    .chart-grid-3 { grid-template-columns: 1fr !important; }
+    .grid-2col { grid-template-columns: 1fr !important; }
+    .grid-2col-inv { grid-template-columns: 1fr !important; }
+    .hero-balance-row { flex-direction: column !important; gap: 12px !important; }
+    .hero-balance-right { text-align: left !important; }
+    .card-page-grid { grid-template-columns: 1fr !important; }
+    .transfers-grid { grid-template-columns: 1fr !important; }
+    .help-grid { grid-template-columns: 1fr !important; }
+    .settings-grid { grid-template-columns: 1fr !important; }
+    .help-contact-grid { grid-template-columns: 1fr !important; }
+    .txn-table-header { display: none !important; }
+    .txn-table-row { grid-template-columns: 36px 1fr auto !important; }
+    .txn-table-row .txn-date { display: none !important; }
+    .txn-table-row .txn-cat { display: none !important; }
+    .txn-table-row .txn-status { display: none !important; }
+    .bal-amount { font-size: 36px !important; }
+    .bal-cents { font-size: 28px !important; }
+    .hero-balance-card { padding: 20px 18px !important; }
+    .page-title { font-size: 19px !important; }
+  }
+  @media (max-width: 400px) {
+    .main-content { padding: 12px 10px 80px !important; }
+    .bal-amount { font-size: 30px !important; }
+  }
   
   .fade-in { animation: fadeIn 0.35s ease; }
   @keyframes fadeIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
@@ -226,12 +271,12 @@ const TXNS = [
   { id:1, name:"Apple Store",        type:"debit",  amount:-1299.00, date:"May 27, 2026", cat:"Shopping",     ref:"TXN-2026-0001" },
   { id:2, name:"Incoming Wire",       type:"credit", amount:52000.00, date:"May 25, 2026", cat:"Transfer",     ref:"TXN-2026-0002" },
   { id:3, name:"Netflix",             type:"debit",  amount:-15.99,   date:"May 24, 2026", cat:"Entertainment",ref:"TXN-2026-0003" },
-  { id:4, name:"Salary Deposit",      type:"credit", amount:18500.00, date:"May 20, 2026", cat:"Income",       ref:"TXN-2026-0004" },
+  { id:4, name:"Direct Deposit",       type:"credit", amount:18500.00, date:"May 20, 2026", cat:"Income",       ref:"TXN-2026-0004" },
   { id:5, name:"Wire Transfer Out",   type:"debit",  amount:-7800.00, date:"May 18, 2026", cat:"Transfer",     ref:"TXN-2026-0005" },
   { id:6, name:"Amazon",              type:"debit",  amount:-245.60,  date:"May 15, 2026", cat:"Shopping",     ref:"TXN-2026-0006" },
   { id:7, name:"Dividend Payment",    type:"credit", amount:3240.00,  date:"May 10, 2026", cat:"Investment",   ref:"TXN-2026-0007" },
   { id:8, name:"Marriott New York",   type:"debit",  amount:-890.00,  date:"May 8, 2026",  cat:"Travel",       ref:"TXN-2026-0008" },
-  { id:9, name:"Freelance Income",    type:"credit", amount:5500.00,  date:"May 5, 2026",  cat:"Income",       ref:"TXN-2026-0009" },
+  { id:9, name:"Consulting Payment",   type:"credit", amount:5500.00,  date:"May 5, 2026",  cat:"Income",       ref:"TXN-2026-0009" },
   { id:10,name:"Gold's Gym",          type:"debit",  amount:-120.00,  date:"May 1, 2026",  cat:"Health",       ref:"TXN-2026-0010" },
 ];
 const BALANCE_TREND = [
@@ -643,7 +688,7 @@ function TopBar({ setSidebarOpen, sidebarOpen, showNotif, setShowNotif, dark, se
           style={{ background: "none", border: "none", cursor: "pointer", display: "flex", padding: 6, borderRadius: 6, color: T.textSub }}>
           <Icon name="menu" size={18} color={T.textSub} />
         </button>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, background: T.surfaceAlt, border: `1px solid ${T.border}`, borderRadius: 8, padding: "8px 12px" }}>
+        <div className="topbar-search" style={{ display: "flex", alignItems: "center", gap: 8, background: T.surfaceAlt, border: `1px solid ${T.border}`, borderRadius: 8, padding: "8px 12px" }}>
           <Icon name="search" size={15} color={T.textMuted} />
           <input placeholder="Search transactions, accounts..." className="slb" style={{ background: "none", border: "none", outline: "none", color: T.text, fontSize: 13, width: 220 }} />
         </div>
@@ -664,7 +709,7 @@ function TopBar({ setSidebarOpen, sidebarOpen, showNotif, setShowNotif, dark, se
             )}
           </button>
           {showNotif && (
-            <div style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", width: 320, background: T.surface, border: `1px solid ${T.borderStrong}`, borderRadius: 12, boxShadow: T.shadowLg, zIndex: 100 }}>
+            <div style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", width: 300, maxWidth: "calc(100vw - 24px)", background: T.surface, border: `1px solid ${T.borderStrong}`, borderRadius: 12, boxShadow: T.shadowLg, zIndex: 100 }}>
               <div style={{ padding: "14px 16px 10px", borderBottom: `1px solid ${T.border}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span style={{ fontWeight: 500, color: T.text, fontSize: 14 }}>Notifications</span>
                 <span style={{ fontSize: 12, color: T.gold, cursor: "pointer" }}>Mark all read</span>
@@ -689,7 +734,7 @@ function TopBar({ setSidebarOpen, sidebarOpen, showNotif, setShowNotif, dark, se
 
         <div style={{ display: "flex", alignItems: "center", gap: 10, paddingLeft: 6, borderLeft: `1px solid ${T.border}`, marginLeft: 2 }}>
           <Avatar initials="DS" color={T.gold} size={34} />
-          <div>
+          <div className="topbar-user-name">
             <div style={{ fontSize: 13, fontWeight: 500, color: T.text }}>Daniel Scott</div>
             <div style={{ fontSize: 11, color: T.gold, display: "flex", alignItems: "center", gap: 3 }}>
               <Icon name="shield" size={11} color={T.gold} /> Platinum · Active
@@ -728,17 +773,17 @@ function DashboardHome({ setCurrentPage, T }) {
       </div>
 
       {/* Hero Balance */}
-      <div style={{ background: T.surface, border: `1px solid ${T.borderStrong}`, borderRadius: 16, padding: "28px 32px", marginBottom: 20, boxShadow: T.shadowMd, position: "relative", overflow: "hidden" }}>
+      <div className="hero-balance-card" style={{ background: T.surface, border: `1px solid ${T.borderStrong}`, borderRadius: 16, padding: "28px 32px", marginBottom: 20, boxShadow: T.shadowMd, position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${T.gold}, ${T.goldLight}, ${T.gold})` }} />
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 20 }}>
+        <div className="hero-balance-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 20 }}>
           <div>
             <div style={{ fontSize: 11, color: T.textMuted, letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: 500, marginBottom: 10 }}>Total Balance</div>
-            <div className="slb-balance" style={{ fontSize: 48, color: T.text, lineHeight: 1 }}>
-              $765,465<span style={{ color: T.gold, fontSize: 38 }}>.44</span>
+            <div className="slb-balance bal-amount" style={{ fontSize: 48, color: T.text, lineHeight: 1 }}>
+              $765,465<span className="bal-cents" style={{ color: T.gold, fontSize: 38 }}>.44</span>
             </div>
             <div style={{ display: "flex", gap: 28, marginTop: 18, flexWrap: "wrap" }}>
               <div>
-                <div style={{ fontSize: 10.5, color: T.textMuted, letterSpacing: "0.07em", textTransform: "uppercase", marginBottom: 4 }}>Available</div>
+                <div style={{ fontSize: 10.5, color: T.textMuted, letterSpacing: "0.07em", textTransform: "uppercase", marginBottom: 4 }}>Available Balance</div>
                 <div style={{ fontSize: 18, fontWeight: 500, color: T.green, fontFamily: "DM Mono" }}>$762,120.10</div>
               </div>
               <div style={{ width: 1, background: T.border }} />
@@ -748,19 +793,19 @@ function DashboardHome({ setCurrentPage, T }) {
               </div>
             </div>
           </div>
-          <div style={{ textAlign: "right" }}>
+          <div className="hero-balance-right" style={{ textAlign: "right" }}>
             <span className="pill-badge badge-green" style={{ marginBottom: 12, display: "inline-flex" }}>
               <Icon name="trend" size={11} color={T.green} /> +12.4% this month
             </span>
             <div style={{ fontSize: 12.5, color: T.textSub }}>Premium Checking Account</div>
-            <div style={{ fontSize: 12, color: T.textMuted, marginTop: 5, fontFamily: "DM Mono" }}>4589-22108</div>
+            <div style={{ fontSize: 12, color: T.textMuted, marginTop: 5, fontFamily: "DM Mono" }}>4589-••••-••••</div>
             <div style={{ fontSize: 12, color: T.textMuted, marginTop: 3 }}>Member since 2018</div>
           </div>
         </div>
       </div>
 
       {/* Stats */}
-      <div style={{ display: "flex", gap: 14, marginBottom: 20, flexWrap: "wrap" }}>
+      <div className="stat-cards-row" style={{ display: "flex", gap: 14, marginBottom: 20, flexWrap: "wrap" }}>
         <StatCard label="Monthly Income"  value="$74,240" icon="dollar"    trend="up"   sub="+18% vs last month" T={T} />
         <StatCard label="Monthly Spend"   value="$11,670" icon="card"      trend="down" sub="-5% vs last month"  T={T} />
         <StatCard label="Portfolio Value" value="$312,000" icon="portfolio" trend="up"   sub="+12.4% this year"  T={T} />
@@ -768,7 +813,7 @@ function DashboardHome({ setCurrentPage, T }) {
       </div>
 
       {/* Charts */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 20 }}>
+      <div className="chart-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 20 }}>
         <div className="card" style={{ padding: 20 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
             <div>
@@ -819,7 +864,7 @@ function DashboardHome({ setCurrentPage, T }) {
       </div>
 
       {/* Bottom grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr 1fr", gap: 16, marginBottom: 20 }}>
+      <div className="chart-grid-3" style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr 1fr", gap: 16, marginBottom: 20 }}>
         {/* Transactions */}
         <div className="card" style={{ padding: 20 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
@@ -892,7 +937,7 @@ function DashboardHome({ setCurrentPage, T }) {
       </div>
 
       {/* Beneficiaries + Security */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+      <div className="grid-2col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
         <div className="card" style={{ padding: 20 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
             <div style={{ fontSize: 14, fontWeight: 500, color: T.text }}>Saved Beneficiaries</div>
@@ -919,9 +964,9 @@ function DashboardHome({ setCurrentPage, T }) {
             <Icon name="shield" size={15} color={T.gold} /> Account Details
           </div>
           {[
-            { label: "Account Number",  value: "4589-22108" },
-            { label: "Routing Number",  value: "021000021" },
-            { label: "IBAN",            value: "US64FTBK4589221088412291" },
+            { label: "Account Number",  value: "4589-••••-••••" },
+            { label: "Routing Number",  value: "0210-••••-1" },
+            { label: "IBAN",            value: "US64FTBK••••••••••••91" },
             { label: "SWIFT/BIC",       value: "FTBKUS44" },
           ].map((r, i) => (
             <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: `1px solid ${T.border}` }}>
@@ -965,13 +1010,13 @@ function TransactionsPage({ T }) {
         ))}
       </div>
       <div className="card" style={{ overflow: "hidden" }}>
-        <div style={{ padding: "12px 20px", borderBottom: `1px solid ${T.border}`, display: "grid", gridTemplateColumns: "36px 1fr 130px 110px 110px 100px", gap: 12 }}>
+        <div className="txn-table-header" style={{ padding: "12px 20px", borderBottom: `1px solid ${T.border}`, display: "grid", gridTemplateColumns: "36px 1fr 130px 110px 110px 100px", gap: 12 }}>
           {["", "Description", "Date", "Category", "Amount", "Status"].map((h, i) => (
             <div key={i} style={{ fontSize: 11, fontWeight: 500, color: T.textMuted, letterSpacing: "0.06em", textTransform: "uppercase" }}>{h}</div>
           ))}
         </div>
         {list.map(t => (
-          <div key={t.id} className="table-row" style={{ gridTemplateColumns: "36px 1fr 130px 110px 110px 100px" }}>
+          <div key={t.id} className="table-row txn-table-row" style={{ gridTemplateColumns: "36px 1fr 130px 110px 110px 100px" }}>
             <div style={{ width: 32, height: 32, borderRadius: 8, background: T.goldBg, border: `1px solid ${T.goldBorder}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
               <Icon name={t.type === "credit" ? "dollar" : "card"} size={14} color={T.gold} />
             </div>
@@ -979,12 +1024,12 @@ function TransactionsPage({ T }) {
               <div style={{ fontSize: 13, fontWeight: 500, color: T.text }}>{t.name}</div>
               <div style={{ fontSize: 11, color: T.textMuted }}>{t.ref}</div>
             </div>
-            <div style={{ fontSize: 12, color: T.textSub }}>{t.date}</div>
-            <span className="pill-badge" style={{ background: T.surfaceAlt, color: T.textSub, border: `1px solid ${T.border}`, fontSize: 11 }}>{t.cat}</span>
+            <div style={{ fontSize: 12, color: T.textSub }} className="txn-date">{t.date}</div>
+            <span className="pill-badge txn-cat" style={{ background: T.surfaceAlt, color: T.textSub, border: `1px solid ${T.border}`, fontSize: 11 }}>{t.cat}</span>
             <div style={{ fontSize: 13, fontWeight: 600, color: t.type === "credit" ? T.green : T.text, fontFamily: "DM Mono" }}>
               {t.type === "credit" ? "+" : "−"}${Math.abs(t.amount).toLocaleString("en-US", { minimumFractionDigits: 2 })}
             </div>
-            <span className="pill-badge badge-green" style={{ fontSize: 11 }}>
+            <span className="pill-badge badge-green txn-status" style={{ fontSize: 11 }}>
               <Icon name="check" size={10} color={T.green} /> Settled
             </span>
           </div>
@@ -1009,7 +1054,7 @@ function CardsPage({ T }) {
         <div className="slb-serif" style={{ fontSize: 22, color: T.text, fontWeight: 500 }}>Cards</div>
         <div style={{ fontSize: 13, color: T.textSub, marginTop: 4 }}>Manage your debit and credit cards</div>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+      <div className="card-page-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
         <div>
           <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
             {CARDS.map((cd, i) => (
@@ -1114,7 +1159,7 @@ function TransfersPage({ T }) {
         <div className="slb-serif" style={{ fontSize: 22, color: T.text, fontWeight: 500 }}>Send Money</div>
         <div style={{ fontSize: 13, color: T.textSub, marginTop: 4 }}>Domestic and international wire transfers</div>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 20 }}>
+      <div className="transfers-grid" style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 20 }}>
         <div className="card-elevated" style={{ padding: 28 }}>
           {/* Stepper */}
           <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 28 }}>
@@ -1301,7 +1346,7 @@ function InvestmentsPage({ T }) {
         <StatCard label="Dividends YTD"   value="$8,640"   icon="coins"    sub="4 payments"                     T={T} />
         <StatCard label="Unrealized P&L"  value="+$44,200" icon="chart"    trend="up"   sub="Since inception"   T={T} />
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 16, marginBottom: 16 }}>
+      <div className="grid-2col-inv" style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 16, marginBottom: 16 }}>
         <div className="card" style={{ padding: 20 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
             <div>
@@ -1396,9 +1441,7 @@ function SettingsPage({ T }) {
         <div className="slb-serif" style={{ fontSize: 22, color: T.text, fontWeight: 500 }}>Settings</div>
         <div style={{ fontSize: 13, color: T.textSub, marginTop: 4 }}>Manage account preferences and security</div>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-        <div className="card" style={{ padding: 24 }}>
-          <div style={{ fontSize: 15, fontWeight: 500, color: T.text, marginBottom: 20, fontFamily: "Playfair Display" }}>Profile Information</div>
+      <div className="settings-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20, padding: 16, background: T.goldBg, borderRadius: 12, border: `1px solid ${T.goldBorder}` }}>
             <Avatar initials="DS" color={T.gold} size={56} />
             <div>
@@ -1492,7 +1535,7 @@ function HelpPage({ T }) {
         <div className="slb-serif" style={{ fontSize: 22, color: T.text, fontWeight: 500 }}>Help Center</div>
         <div style={{ fontSize: 13, color: T.textSub, marginTop: 4 }}>24/7 Platinum Priority Support</div>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12, marginBottom: 20 }}>
+      <div className="help-contact-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12, marginBottom: 20 }}>
         {[
           { icon: "phone",    label: "Call Us",       sub: "1-800-SLB-PLAT" },
           { icon: "chat",     label: "Live Chat",      sub: "Under 30 sec wait" },
@@ -1507,7 +1550,7 @@ function HelpPage({ T }) {
           </div>
         ))}
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 16 }}>
+      <div className="help-grid" style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 16 }}>
         <div className="card" style={{ padding: 24 }}>
           <div style={{ fontSize: 15, fontWeight: 500, color: T.text, marginBottom: 16, fontFamily: "Playfair Display" }}>Frequently Asked Questions</div>
           {FAQS.map((f, i) => (
@@ -1565,6 +1608,30 @@ function HelpPage({ T }) {
   );
 }
 
+/* ─── MOBILE BOTTOM NAV ──────────────────────────────────────── */
+function MobileNav({ page, setPage, T }) {
+  const items = [
+    { id: "dashboard",    label: "Home",    icon: "home"      },
+    { id: "transactions", label: "History", icon: "list"      },
+    { id: "transfers",    label: "Send",    icon: "transfer"  },
+    { id: "investments",  label: "Invest",  icon: "chart"     },
+    { id: "settings",     label: "Account", icon: "settings"  },
+  ];
+  return (
+    <div className="mobile-nav" style={{ justifyContent: "space-around", alignItems: "center" }}>
+      {items.map(item => (
+        <button key={item.id} onClick={() => setPage(item.id)}
+          style={{ background: "none", border: "none", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 3, padding: "4px 8px", minWidth: 52 }}>
+          <div style={{ width: 32, height: 32, borderRadius: 10, background: page === item.id ? T.goldBg : "transparent", border: page === item.id ? `1px solid ${T.goldBorder}` : "1px solid transparent", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s" }}>
+            <Icon name={item.icon} size={17} color={page === item.id ? T.gold : T.textMuted} />
+          </div>
+          <span style={{ fontSize: 10, fontWeight: page === item.id ? 500 : 400, color: page === item.id ? T.gold : T.textMuted, fontFamily: "DM Sans", letterSpacing: "0.01em" }}>{item.label}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
 /* ─── NOTIFICATIONS DATA ────────────────────────────────────── */
 const NOTIFS = [
   { id:1, title:"Wire Transfer Received",  msg:"+$52,000 from J. Harrison",         time:"2h ago",  read:false, type:"success" },
@@ -1579,14 +1646,28 @@ export default function App() {
   const [dark, setDark] = useState(false);
   const T = TOKENS[dark ? "dark" : "light"];
 
+  // Detect mobile
+  const [isMobile, setIsMobile] = useState(() => typeof window !== "undefined" && window.innerWidth <= 768);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   const [stage, setStage] = useState("login");
   const [page, setPage] = useState("dashboard");
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  // Desktop: sidebar open by default; Mobile: closed by default
+  const [sidebarOpen, setSidebarOpen] = useState(!isMobile);
   const [showNotif, setShowNotif] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // When screen changes between mobile/desktop, auto-adjust sidebar
+  useEffect(() => {
+    setSidebarOpen(!isMobile);
+  }, [isMobile]);
 
   useEffect(() => {
     const el = document.createElement("style");
@@ -1602,6 +1683,13 @@ export default function App() {
     setTimeout(() => { setLoading(false); setStage("pin"); }, 1500);
   };
 
+  const handlePageChange = (p) => {
+    setPage(p);
+    setShowNotif(false);
+    // On mobile, close sidebar after navigation
+    if (isMobile) setSidebarOpen(false);
+  };
+
   if (stage === "login") return (
     <LoginPage username={username} setUsername={setUsername}
       password={password} setPassword={setPassword}
@@ -1613,15 +1701,26 @@ export default function App() {
   );
 
   return (
-    <div className="slb" style={{ display: "flex", height: "100vh", background: T.bgAlt, color: T.text, overflow: "hidden" }}>
-      <Sidebar currentPage={page} setCurrentPage={p => { setPage(p); setShowNotif(false); }} isOpen={sidebarOpen} T={T} />
+    <div className="slb" style={{ display: "flex", height: "100vh", background: T.bgAlt, color: T.text, overflow: "hidden", position: "relative" }}>
+
+      {/* Mobile overlay — shown when sidebar open on mobile */}
+      {isMobile && sidebarOpen && (
+        <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />
+      )}
+
+      {/* Sidebar — fixed on mobile, flex on desktop */}
+      <div className={isMobile ? "desktop-sidebar" : ""}>
+        <Sidebar currentPage={page} setCurrentPage={handlePageChange} isOpen={sidebarOpen} T={T} />
+      </div>
+
       <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", minWidth: 0 }}>
         <TopBar setSidebarOpen={setSidebarOpen} sidebarOpen={sidebarOpen}
           showNotif={showNotif} setShowNotif={setShowNotif}
           dark={dark} setDark={setDark} T={T} NOTIFS={NOTIFS} />
         <main onClick={() => setShowNotif(false)}
+          className="main-content"
           style={{ flex: 1, overflowY: "auto", padding: "24px 28px", background: T.bgAlt }}>
-          {page === "dashboard"    && <DashboardHome setCurrentPage={setPage} T={T} />}
+          {page === "dashboard"    && <DashboardHome setCurrentPage={handlePageChange} T={T} />}
           {page === "transactions" && <TransactionsPage T={T} />}
           {page === "cards"        && <CardsPage T={T} />}
           {page === "transfers"    && <TransfersPage T={T} />}
@@ -1629,6 +1728,9 @@ export default function App() {
           {page === "settings"     && <SettingsPage T={T} />}
           {page === "help"         && <HelpPage T={T} />}
         </main>
+
+        {/* Mobile bottom nav */}
+        {isMobile && <MobileNav page={page} setPage={handlePageChange} T={T} />}
       </div>
     </div>
   );
